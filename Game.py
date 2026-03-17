@@ -186,7 +186,7 @@ def divide(divisor, is_player=True):
 
     if is_player:
         pc_divisor = random.choice([2, 3, 4])
-        make_move(pc_divisor, is_player=False) 
+        divide(pc_divisor, is_player=False) 
 
 # End of the Game
 
