@@ -3,6 +3,11 @@ import random
 
 current_number = None
 
+player_score = 0
+pc_score = 0 
+
+bank_stack = []
+
 def generate_numbers():
     numbers = []
     while len(numbers) < 5:
@@ -97,7 +102,17 @@ for i, num in enumerate(numbers):
 
 game_frame = tk.Frame(root, bg="#6A0DAD")
 
-# Label
+# Bank Label
+bank_label = tk.Label(
+    game_frame,
+    text="Bank: 0",
+    bg="#6A0DAD",
+    fg="white",
+    font=("Arial", 20, "bold")
+)
+bank_label.pack(pady=10)
+
+# Current Number Label
 label = tk.Label(
     game_frame,
     text="Current Number: 0",
@@ -107,6 +122,99 @@ label = tk.Label(
 )
 label.pack(pady=30)
 
+# Score Label
+score_frame= tk.Frame(game_frame, bg="#6A0DAD")
+score_frame.pack(pady=10)
+
+# PC Label
+pc_label = tk.Label(
+    score_frame,
+    text="PC: 0",
+    fg="white",
+    bg="#6A0DAD",
+    font=("Arial", 14, "bold")
+)
+pc_label.pack(side="left", padx=50)
+
+# Player Label
+player_label = tk.Label(
+    score_frame,
+    text="You: 0",
+    fg="white",
+    bg="#6A0DAD",
+    font=("Arial", 14, "bold")
+)
+player_label.pack(side="right", padx=50)
+
+# Score Function
+def update_score(number, is_player=True):
+    global player_score, pc_score
+
+    if number % 2 == 0:
+        if is_player:
+            player_score -= 1
+        else:
+            pc_score -= 1 
+    else:
+        if is_player:
+            player_score += 1
+        else:
+            pc_score += 1
+
+    pc_label.config(text=f"PC:{pc_score}")
+    player_label.config(text=f"You:{player_score}")
+    
+
+# Game Fuction
+def divide(divisor, is_player=True):
+    global current_number, bank_stack
+
+    current_number //= divisor
+    label.config(text=f"Current Number: {current_number}")
+
+    update_score(current_number, is_player=is_player)
+
+    if current_number % 10 in [0, 5]:
+        bank_stack.append(1)
+        bank_label.config(text=f"Bank: {len(bank_stack)}")
+
+ 
+    if current_number <= 10:
+        end_game()
+        return
+
+
+    if is_player:
+        pc_divisor = random.choice([2, 3, 4])
+        make_move(pc_divisor, is_player=False) 
+
+# End of the Game
+
+# End Frame
+result_frame = tk.Frame(root, bg="#6A0DAD")
+
+result_label = tk.Label(result_frame, text="", bg="#6A0DAD", fg="white", font=("Arial", 17, "bold"))
+result_label.pack(pady=20)
+
+# End Function
+def end_game():
+    global player_score, pc_score, bank_stack
+
+    player_score += sum(bank_stack)
+    bank_stack.clear()
+    bank_label.config(text="Bank: 0")
+
+    result_text = f"Your Score: {player_score} vs  PC Score: {pc_score}"
+    if player_score > pc_score:
+        result_text += "You Win!"
+    elif pc_score > player_score:
+        result_text += "\nPC Win!"
+    else:
+        result_text += "\nDraw"
+    
+    import tkinter.messagebox as msg
+    msg.showinfo("Game Over", result_text)
+
 # Button
 btn2 = tk.Button(game_frame, text="Divide by 2", bg="white", fg="black", font=("Arial", 14, "bold"), width=15, height=2)
 btn3 = tk.Button(game_frame, text="Divide by 3", bg="white", fg="black", font=("Arial", 14, "bold"), width=15, height=2)
@@ -115,5 +223,9 @@ btn4 = tk.Button(game_frame, text="Divide by 4", bg="white", fg="black", font=("
 btn2.pack(pady=10)
 btn3.pack(pady=10)
 btn4.pack(pady=10)
+
+btn2.config(command=lambda: divide(2))
+btn3.config(command=lambda: divide(3))
+btn4.config(command=lambda: divide(4))
 
 root.mainloop()
