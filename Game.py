@@ -7,27 +7,27 @@ current_number = None
 
 player_score = 0
 pc_score = 0 
-
+algorithm = None
 bank = 0
 
 def generate_numbers():
-    numbers = []
-    while len(numbers) < 5:
-        num = random.randint(20000, 30000)
-        if num % 12 == 0:
-            numbers.append(num)
-    return numbers
+    generated_numbers = []
+    while len(generated_numbers) < 5:
+        number = random.randint(20000, 30000)
+        if number % 12 == 0:
+            generated_numbers.append(number)
+    return generated_numbers
 
 def start_game():
     start_frame.pack_forget()
     numbers_frame.pack(pady=20)
 
-def choose_number(num):
+def choose_number(number):
     global current_number
-    current_number = num
+    current_number = number
 
     numbers_frame.pack_forget()
-    game_frame.pack(pady=20)
+    algorithm_frame.pack(pady=20)
 
     label.config(text=f"Current Number: {current_number}")
 
@@ -100,6 +100,48 @@ for i, num in enumerate(numbers):
     )
     btn.grid(row=0, column=i, padx=10)
 
+# Algorithm selection screen
+
+algorithm_frame = tk.Frame(root, bg="#6A0DAD")
+
+algorithm_title = tk.Label(
+    algorithm_frame,
+    text="Choose an algorithm",
+    bg="#6A0DAD",
+    fg="white",
+    font=("Arial", 20, "bold")
+)
+algorithm_title.pack(pady=40)
+
+def choose_algorithm(algo):
+    global algorithm
+    algorithm = algo
+
+    algorithm_frame.pack_forget()
+    game_frame.pack(pady=20)
+
+btn_minimax = tk.Button(
+    algorithm_frame,
+    text="Minimax",
+    font=("Arial", 16, "bold"),
+    width=15,
+    height=4,
+    command=lambda: choose_algorithm("minimax")
+)
+
+btn_alphabeta = tk.Button(
+    algorithm_frame,
+    text="Alpha-Beta",
+    font=("Arial", 16, "bold"),
+    width=15,
+    height=4,
+    command=lambda: choose_algorithm("alphabeta")
+)
+
+btn_minimax.pack(side="left", padx=20)
+btn_alphabeta.pack(side="left", padx=20)
+
+
 # GAME SCREEN
 
 game_frame = tk.Frame(root, bg="#6A0DAD")
@@ -167,7 +209,7 @@ def update_score(number, is_player=True):
     player_label.config(text=f"You:{player_score}")
     
 
-# Game Fuction
+# Game Function
 
 def divide(divisor, is_player=True):
     global current_number, bank
@@ -187,16 +229,21 @@ def divide(divisor, is_player=True):
 
 
     if is_player:
-        root = Node(current_number, player_score, pc_score, bank, True)
+        tree_root = Node(current_number, player_score, pc_score, bank, True)
 
-        build_tree(root)
-        minimax(root)
+        build_tree(tree_root)
 
-        pc_divisor = get_best_move_from_tree(root)
+        if algorithm == "minimax":
+            minimax(tree_root)
+        elif algorithm == "alphabeta":
+            print("Not yet implemented")
+            return
+
+        pc_divisor = get_best_move_from_tree(tree_root)
+
         print(f"PC chooses to divide by {pc_divisor}")
         divide(pc_divisor, is_player=False) 
 
-# End of the Game
 
 # End Frame
 result_frame = tk.Frame(root, bg="#6A0DAD")
@@ -204,7 +251,6 @@ result_frame = tk.Frame(root, bg="#6A0DAD")
 result_label = tk.Label(result_frame, text="", bg="#6A0DAD", fg="white", font=("Arial", 17, "bold"))
 result_label.pack(pady=20)
 
-# End Function
 def end_game(last_player):
     global player_score, pc_score, bank
 
