@@ -36,7 +36,7 @@ def choose_beginner(player):
 
 
 def choose_number(number):
-    global current_number, starting_number
+    global current_number, starting_number, pending_pc_move
     current_number = number
     starting_number = number
 
@@ -45,6 +45,12 @@ def choose_number(number):
 
     label.config(text=f"Current Number: {current_number}")
     start_label.config(text=f"Starting number: {starting_number}")
+
+    if picked_player == "ai":
+        pending_pc_move = True
+        make_pc_move()
+        
+      
 
 root = tk.Tk()
 root.title("Game")

@@ -7,7 +7,7 @@ class Node:
         self.is_pc_turn = is_pc_turn
 
         self.children = []
-        self.value = None
+        self.value = 0
         self.move = None  # 2 or 3 or 4
 
     def generate_children(self):
