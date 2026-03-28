@@ -4,15 +4,17 @@ from Node import Node
 from minimax import build_tree, minimax, get_best_move_from_tree
 from alphabeta import alpha_beta
 
-current_number = None
 
-player_score = 0
-pc_score = 0 
-algorithm = None
-bank = 0
-pending_pc_move = False
-starting_number = None
-previous_number = None
+def starting():   #creating a function which imply of the starting state of the game
+    current_number = None
+    player_score = 0
+    pc_score = 0 
+    algorithm = None
+    bank = 0
+    pending_pc_move = False
+    starting_number = None
+    previous_number = None
+    return current_number, player_score, pc_score, algorithm, bank, pending_pc_move, starting_number, previous_number
 
 def generate_numbers():
     generated_numbers = []
@@ -25,6 +27,26 @@ def generate_numbers():
 def start_game():
     start_frame.pack_forget()
     player_frame.pack(pady=20)
+
+def restart():
+    global current_number, player_score, pc_score, algorithm, bank, pending_pc_move, starting_number, previous_number
+    current_number, player_score, pc_score, algorithm, bank, pending_pc_move, starting_number, previous_number = starting() #makes these variable the same as the one in starting function
+# these lines make the label in the window to their original state as well
+    label.config(text="Current Number: 0")
+    start_label.config(text="Starting number: -")
+    prev_number_label.config(text="Number in a previous round: -")
+    player_move_label.config(text="Your previous choice: -")
+    pc_move_label.config(text="PC's previous choice: -")
+    bank_label.config(text="Bank: 0")
+    pc_label.config(text="PC: 0")
+    player_label.config(text="You: 0")
+
+    game_frame.pack_forget()
+    numbers_frame.pack_forget()
+    player_frame.pack_forget()
+    algorithm_frame.pack_forget()
+
+    start_frame.pack(pady=20)
 
 # a window to pick the starting player
 def choose_beginner(player):
@@ -428,9 +450,14 @@ def end_game(last_player):
         result_text += "\nPC Win!"
     else:
         result_text += "\nDraw"
-
-    import tkinter.messagebox as msg
-    msg.showinfo("Game Over", result_text)
+        
+        import tkinter.messagebox as msg
+        msg.showinfo("Game Over", result_text,)
+        check = msg.askyesno("Restart", "Do you wish to restart")
+        if not check:
+            root.quit()
+        else:
+            restart()
 
 
 # Button
