@@ -411,6 +411,9 @@ def divide(divisor, is_player=True):
 
     before_move = current_number
 
+    global previous_number
+    previous_number = before_move
+
     current_number //= divisor
     label.config(text=f"Current Number: {current_number}")
 
