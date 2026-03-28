@@ -15,6 +15,8 @@ def starting():   #creating a function which imply of the starting state of the 
     starting_number = None
     previous_number = None
     return current_number, player_score, pc_score, algorithm, bank, pending_pc_move, starting_number, previous_number
+current_number, player_score, pc_score, algorithm, bank, pending_pc_move, starting_number, previous_number = starting()
+    
 
 def generate_numbers():
     generated_numbers = []
@@ -450,14 +452,15 @@ def end_game(last_player):
         result_text += "\nPC Win!"
     else:
         result_text += "\nDraw"
+    import tkinter.messagebox as msg
+    msg.showinfo("Game Over", result_text,)
+    check = msg.askyesno("Restart", "Do you wish to restart")
+    if not check:
+        root.quit()
+    else:
+        restart()
         
-        import tkinter.messagebox as msg
-        msg.showinfo("Game Over", result_text,)
-        check = msg.askyesno("Restart", "Do you wish to restart")
-        if not check:
-            root.quit()
-        else:
-            restart()
+
 
 
 # Button
