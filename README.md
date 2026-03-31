@@ -8,5 +8,5 @@ What is done:
 - A place where we can see what the AI did its previous turn
 - Change interface
 
-To-Do:
-1. Implementation of Restart possibility
+To-Do:  
+~~1. Implementation of Restart possibility~~
