@@ -106,7 +106,10 @@ def choose_number(number):
 
     if picked_player == "ai":
         pending_pc_move = True
-        make_pc_move()
+        #We need to fix the issue that the algo is not asked before the first turn.
+        #This calls the algo-frame before calculating
+        game_frame.pack_forget()
+        algorithm_frame.pack(pady=20)
         
       
 """
