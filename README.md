@@ -1,12 +1,33 @@
-What is done:
-- Implementation of Graphical Interface (basic)
-- Implementation of Game Tree
-- Implementation of Minimax algorithm
-- Implementation of Alpha-Beta algorithm
-- Implementation of choosing an algorithm in every round
-- Implementation of choosing who starts the game (human or PC)
-- A place where we can see what the AI did its previous turn
-- Change interface
+# 🎮 Game with AI (Group Project)
 
-To-Do:  
-~~1. Implementation of Restart possibility~~
+## 📌 Overview
+This project is an interactive game developed as part of a group assignment. The game allows a player to compete against an AI opponent that makes decisions using algorithmic strategies.
+
+---
+
+## 🧠 Features
+- Player vs AI gameplay  
+- Intelligent decision-making (Minimax / Alpha-Beta pruning)  
+- Strategy-based mechanics  
+- Simple and user-friendly interface  
+
+---
+
+## ⚙️ Technologies
+- **Language:** Python
+- **Libraries/Frameworks:** Tkinter
+- **Algorithms:** Minimax, Alpha-Beta pruning  
+
+---
+
+## 🚀 How to Run
+
+```bash
+# clone the repository
+git clone https://github.com/SofiiaBardakovaa/Game_with_AI_Group_Project.git
+
+# go to project folder
+cd Game_with_AI_Group_Project
+
+# run the game
+python Game.py
